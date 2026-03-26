@@ -85,7 +85,7 @@ function updateHint() {
   } else if (algo === "vigenere") {
     hint.textContent = "Vigenère: clé alphabétique (lettres uniquement).";
   } else if (algo === "sdes") {
-    hint.textContent = "S‑DES: clé 10 bits, entrée texte → sortie hex. Déchiffrement attend du hex.";
+    hint.textContent = "S‑DES: clé libre, sortie en Base64. Déchiffrement attend du Base64.";
   }
 }
 
@@ -248,18 +248,11 @@ function runSDES(text) {
       const enc = sdesEncryptByte(b, K1, K2);
       out.push(enc);
     }
-    return out.map((b) => b.toString(16).padStart(2, "0")).join("").toUpperCase();
+    return toBase64(new Uint8Array(out));
   }
 
-  const clean = text.replace(/\s+/g, "");
-  if (!/^[0-9a-fA-F]*$/.test(clean) || clean.length % 2 !== 0) {
-    throw new Error("S‑DES: en mode déchiffrement, l'entrée doit être un hex valide.");
-  }
-  const bytes = [];
-  for (let i = 0; i < clean.length; i += 2) {
-    bytes.push(parseInt(clean.slice(i, i + 2), 16));
-  }
-  const out = bytes.map((b) => sdesDecryptByte(b, K1, K2));
+  const bytes = fromBase64(text.trim(), "S‑DES: entrée Base64 invalide.");
+  const out = Array.from(bytes, (b) => sdesDecryptByte(b, K1, K2));
   return new TextDecoder().decode(new Uint8Array(out));
 }
 

@@ -29,7 +29,7 @@
       <ul>
         <li>AES utilise un mot de passe → une clé dérivée par PBKDF2 (salt + 100k itérations). Le résultat est une chaîne Base64.</li>
         <li>César/Vigenère/S‑DES sont pédagogiques, pas sécurisés pour un usage réel.</li>
-        <li>S‑DES attend une clé de 10 bits (ex: 1010000010) et chiffre en hex.</li>
+        <li>S‑DES accepte n'importe quelle clé saisie et produit une sortie Base64. Le déchiffrement attend du Base64.</li>
       </ul>
       <p class="hint footer-link">Retour à l'application via le menu.</p>
     </section>
