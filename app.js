@@ -3,13 +3,12 @@ const el = (id) => document.getElementById(id);
 const algoSel = el("algo");
 const keyInput = el("key");
 const shiftInput = el("shift");
-const sdesKeyInput = el("sdesKey");
 const inputArea = el("input");
 const outputArea = el("output");
 const hint = el("hint");
 const alertBox = el("alert");
 const shiftField = el("shiftField");
-const sdesField = el("sdesField");
+const keyField = el("keyField");
 
 const modeButtons = [...document.querySelectorAll(".seg")];
 let mode = "encrypt";
@@ -76,8 +75,8 @@ copyBtn.addEventListener("click", async () => {
 
 function updateHint() {
   const algo = algoSel.value;
+  keyField.style.display = algo === "cesar" ? "none" : "flex";
   shiftField.style.display = algo === "cesar" ? "flex" : "none";
-  sdesField.style.display = algo === "sdes" ? "flex" : "none";
 
   if (algo === "aes") {
     hint.textContent = "AES-GCM: sortie en Base64. Format: version(1) + salt(16) + iv(12) + ciphertext.";
@@ -235,11 +234,11 @@ const S1 = [
 ];
 
 function runSDES(text) {
-  const keyStr = sdesKeyInput.value.trim();
-  if (!/^[01]{10}$/.test(keyStr)) {
-    throw new Error("S‑DES: la clé doit contenir exactement 10 bits (0/1)." );
+  const keyStr = keyInput.value.trim();
+  if (!keyStr) {
+    throw new Error("S‑DES: ajoute une clé.");
   }
-  const keyBits = keyStr.split("").map((b) => Number(b));
+  const keyBits = keyTo10Bits(keyStr);
   const { K1, K2 } = sdesKeygen(keyBits);
 
   if (mode === "encrypt") {
@@ -336,4 +335,14 @@ function byteToBits(byte) {
 
 function bitsToByte(bits) {
   return bits.reduce((acc, b) => (acc << 1) | b, 0);
+}
+
+function keyTo10Bits(str) {
+  const bytes = new TextEncoder().encode(str);
+  const bits = [];
+  for (const b of bytes) {
+    for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
+  }
+  while (bits.length < 10) bits.push(0);
+  return bits.slice(0, 10);
 }
