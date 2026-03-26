@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NyCypher — Notes</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <main class="wrap">
+    <header class="hero">
+      <nav class="topnav">
+        <div class="brand">
+          <span class="badge">NyCypher</span>
+        </div>
+        <div class="links">
+          <a href="index.html">Application</a>
+          <a href="apropos.html">À propos</a>
+          <a href="notes.html" class="active">Notes</a>
+        </div>
+      </nav>
+      <h1>Notes NyCypher</h1>
+      <p>Rappels et limitations des algorithmes disponibles.</p>
+    </header>
+
+    <section class="panel notes">
+      <h2>Notes rapides</h2>
+      <ul>
+        <li>AES utilise un mot de passe → une clé dérivée par PBKDF2 (salt + 100k itérations). Le résultat est une chaîne Base64.</li>
+        <li>César/Vigenère/S‑DES sont pédagogiques, pas sécurisés pour un usage réel.</li>
+        <li>S‑DES attend une clé de 10 bits (ex: 1010000010) et chiffre en hex.</li>
+      </ul>
+      <p class="hint footer-link">Retour à l'application via le menu.</p>
+    </section>
+  </main>
+</body>
+</html>
